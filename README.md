@@ -1,4 +1,4 @@
-# vue-ts
+# raydium_tool
 
 ## Project setup
 ```
