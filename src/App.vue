@@ -1,11 +1,14 @@
 <template>
   <div id="app">
     <HelloWorld msg="GRAPE 中奖查询" />
-    <el-row>输入示例（回车增加新地址）： <br/></el-row>
+    <el-row>
+      输入示例（回车增加新地址）：
+      <br />
+    </el-row>
     <el-row style="margin: 10px 0;">
-      HuZx3keBd2b7BnXo38vXn8zuintSbYGs3hoLRe5Es54g<br/>
-      GDr9QWSJmhjwwWZQ6q893LBG9RcuseG1rL8r24BuQ77p<br/>
-      AaP9JVVDhVM68FK21iHknzYPvof4mH9xchwLGUMcieeL
+      HuZx3keBd2b7BnXo38vXn8zuintSbYGs3hoLRe5Es54g
+      <br />GDr9QWSJmhjwwWZQ6q893LBG9RcuseG1rL8r24BuQ77p
+      <br />AaP9JVVDhVM68FK21iHknzYPvof4mH9xchwLGUMcieeL
     </el-row>
     <el-input type="textarea" :rows="15" v-model="desc"></el-input>
     <el-button type="success" @click="test()" style="margin-top: 20px;" :loading="loading">查询</el-button>
@@ -14,23 +17,10 @@
       中奖总票数
       <el-tag>{{ count }}</el-tag>
     </el-row>
-    <el-table
-      :data="tableData"
-      style="width: 100%">
-      <el-table-column
-        prop="address"
-        label="地址"
-        width="180">
-      </el-table-column>
-      <el-table-column
-        prop="allCount"
-        label="总票数"
-        width="180">
-      </el-table-column>
-      <el-table-column
-        prop="winCount"
-        label="中奖票数">
-      </el-table-column>
+    <el-table :data="tableData" style="width: 100%">
+      <el-table-column prop="address" label="地址" width="180"></el-table-column>
+      <el-table-column prop="allCount" label="总票数" width="180"></el-table-column>
+      <el-table-column prop="winCount" label="中奖票数"></el-table-column>
     </el-table>
   </div>
 </template>
@@ -60,16 +50,18 @@ export default class App extends Vue {
     this.loading = true;
     this.count = 0;
 
-    let arr = this.desc.split(/[(\r\n\s)\r\n\s]+/)
+    let arr = this.desc.split(/[(\r\n\s)\r\n\s]+/);
     let count = 0;
     for (let temp of arr) {
-      let { allCount, winCount, address } = await query(temp.trim());
-      this.tableData.push({
-        address: address,
-        allCount: allCount,
-        winCount: winCount,
-      });
-      count += winCount;
+      if (temp.trim().length > 0) {
+        let { allCount, winCount, address } = await query(temp.trim());
+        this.tableData.push({
+          address: address,
+          allCount: allCount,
+          winCount: winCount
+        });
+        count += winCount;
+      }
     }
     this.count = count;
     this.loading = false;
